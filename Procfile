@@ -1,1 +1,1 @@
-worker: go run cowinMain.go
+worker: ./bin/cowin-notif
