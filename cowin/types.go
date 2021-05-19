@@ -6,6 +6,7 @@ type CalendarByDistrictResponse struct {
 
 type Center struct {
 	CenterId     int       `json:"center_id"`
+	Name         string    `json:"name"`
 	Address      string    `json:"address"`
 	StateName    string    `json:"state_name"`
 	DistrictName string    `json:"district_name"`

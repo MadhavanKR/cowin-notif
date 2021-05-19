@@ -27,20 +27,23 @@ func MessageListener() {
 		if fetchErr != nil {
 			sendMessage(getChatIds(), "No vaccination centers are available")
 		}
-		covaxCenters := GetCovaxinCenters(calendarByDistrict)
+		covaxCenters := GetCovaxinCenters("covaxin", calendarByDistrict)
 		availableCovaxCenters := GetAvailableCenters(covaxCenters)
 		var replyContent string
 		if len(availableCovaxCenters) == 0 {
 			replyContent = "No vaccine centers available"
 		} else {
-			centerNames := make([]int, 0)
-			for _, availableCovaxCenter := range availableCovaxCenters {
-				centerNames = append(centerNames, availableCovaxCenter.CenterId)
+			replyContent = fmt.Sprintf("Vaccines are available at %d centers. Details as follows\n", len(availableCovaxCenters))
+			for i, availableCovaxCenter := range availableCovaxCenters {
+				availableVaccines := 0
+				for _, session := range availableCovaxCenter.Sessions {
+					availableVaccines = availableVaccines + session.AvailableCapacity
+				}
+				replyContent = replyContent + fmt.Sprintf("%d) Center Name: %s, Available Slots: %d, PinCode: %d\n\n", i, availableCovaxCenter.Name, availableVaccines, availableCovaxCenter.Pincode)
 			}
-			replyContent = fmt.Sprintf("Vaccines are available at %d centers. center ids %v", len(availableCovaxCenters), centerNames)
 		}
 		sendMessage(getChatIds(), replyContent)
-		time.Sleep(60 * time.Second)
+		time.Sleep(15 * 60 * time.Second)
 	}
 }
 

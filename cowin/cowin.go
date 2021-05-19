@@ -60,17 +60,17 @@ func GetCalendarForDistrict(districtCode string) (*CalendarByDistrictResponse, e
 	return &calendarByDistrictResponse, nil
 }
 
-func GetCovaxinCenters(calendarResponse *CalendarByDistrictResponse) []Center {
-	covaxCenters := make([]Center, 0)
+func GetCovaxinCenters(vaccine string, calendarResponse *CalendarByDistrictResponse) []Center {
+	vaxCenters := make([]Center, 0)
 	for _, vaxCenter := range calendarResponse.Centers {
 		for _, session := range vaxCenter.Sessions {
-			if strings.ToLower(session.Vaccine) == "covaxin" {
-				covaxCenters = append(covaxCenters, vaxCenter)
+			if strings.ToLower(session.Vaccine) == strings.ToLower(vaccine) {
+				vaxCenters = append(vaxCenters, vaxCenter)
 				break
 			}
 		}
 	}
-	return covaxCenters
+	return vaxCenters
 }
 
 func GetAvailableCenters(centers []Center) []Center {
