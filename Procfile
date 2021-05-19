@@ -1,1 +1,1 @@
-worker: cowinMain.exe
+worker: go run cowinMain.go
