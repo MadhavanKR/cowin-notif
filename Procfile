@@ -1,1 +1,1 @@
-worker: ./cowinMain
+worker: cowinMain.exe
