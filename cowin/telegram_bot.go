@@ -26,6 +26,7 @@ func MessageListener() {
 		calendarByDistrict, fetchErr := GetCalendarForDistrict("294")
 		if fetchErr != nil {
 			sendMessage(getChatIds(), "No vaccination centers are available")
+			continue
 		}
 		covaxCenters := GetCovaxinCenters("covaxin", calendarByDistrict)
 		availableCovaxCenters := GetAvailableCenters(covaxCenters)

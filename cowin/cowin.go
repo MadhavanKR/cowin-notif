@@ -30,7 +30,7 @@ var MONTH_MAPPER = map[string]string{
 func GetCalendarForDistrict(districtCode string) (*CalendarByDistrictResponse, error) {
 	year, month, day := time.Now().Date()
 	today := fmt.Sprintf("%d-%s-%d", day, MONTH_MAPPER[month.String()], year)
-	fmt.Println("checking covaixn availability for: ", today)
+	fmt.Println("checking covaxin availability for: ", today)
 	queryParams := url.Values{
 		"district_id": {districtCode},
 		"date":        {today},
