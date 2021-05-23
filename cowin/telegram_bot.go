@@ -110,8 +110,8 @@ func SendVaccineUpdates(vaccineCheckInterval int, vaccine string) {
 						}
 					}
 				}
-				if availableVaccines > 0 {
-					replyContent = replyContent + fmt.Sprintf("%d) Center Name: %s, Available Slots: %d, PinCode: %d\n\n", i, availableCovaxCenter.Name, availableVaccines, availableCovaxCenter.Pincode)
+				if availableVaccines == 0 {
+					replyContent = "No vaccine centers available"
 				} else {
 					replyContent = replyContent + fmt.Sprintf("%d) Center Name: %s, Available Slots: %d, PinCode: %d, Details: %s\n\n", i, availableCovaxCenter.Name, availableVaccines, availableCovaxCenter.Pincode, sessionDetails)
 				}
@@ -152,6 +152,11 @@ func removeChatId(chatId int64) {
 }
 
 func addChatId(chatId int64, username string) {
+	for _, curSubscription := range chatIds {
+		if curSubscription.name == username {
+			return
+		}
+	}
 	chatIds = append(chatIds, Subscription{
 		name:   username,
 		chatId: chatId,
