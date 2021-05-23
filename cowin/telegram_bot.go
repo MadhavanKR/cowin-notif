@@ -5,6 +5,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -100,10 +101,20 @@ func SendVaccineUpdates(vaccineCheckInterval int, vaccine string) {
 			replyContent = fmt.Sprintf("Vaccines are available at %d centers. Details as follows\n", len(availableCovaxCenters))
 			for i, availableCovaxCenter := range availableCovaxCenters {
 				availableVaccines := 0
+				sessionDetails := ""
 				for _, session := range availableCovaxCenter.Sessions {
-					availableVaccines = availableVaccines + session.AvailableCapacity
+					if strings.ToLower(session.Vaccine) == vaccine {
+						availableVaccines = availableVaccines + session.AvailableCapacity
+						if session.AvailableCapacity > 0 {
+							sessionDetails += fmt.Sprintf("date: %s slots: %v\n", session.Date, session.Slots)
+						}
+					}
 				}
-				replyContent = replyContent + fmt.Sprintf("%d) Center Name: %s, Available Slots: %d, PinCode: %d\n\n", i, availableCovaxCenter.Name, availableVaccines, availableCovaxCenter.Pincode)
+				if availableVaccines > 0 {
+					replyContent = replyContent + fmt.Sprintf("%d) Center Name: %s, Available Slots: %d, PinCode: %d\n\n", i, availableCovaxCenter.Name, availableVaccines, availableCovaxCenter.Pincode)
+				} else {
+					replyContent = replyContent + fmt.Sprintf("%d) Center Name: %s, Available Slots: %d, PinCode: %d, Details: %s\n\n", i, availableCovaxCenter.Name, availableVaccines, availableCovaxCenter.Pincode, sessionDetails)
+				}
 			}
 		}
 		sendMessage(getChatIds(), replyContent)
