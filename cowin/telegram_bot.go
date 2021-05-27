@@ -19,7 +19,7 @@ type Subscription struct {
 }
 
 func init() {
-	telegramBot, botCreateErr = tgbotapi.NewBotAPI("1897017778:AAECncT3H8vZ00aHCId6tVqetWK9P-sC8XY")
+	telegramBot, botCreateErr = tgbotapi.NewBotAPI(os.Getenv("botToken"))
 	if botCreateErr != nil {
 		log.Printf("error while creating telegram bot: %v\n", botCreateErr)
 		os.Exit(1)
